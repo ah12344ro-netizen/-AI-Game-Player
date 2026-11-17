@@ -21,13 +21,13 @@ import com.aitouchgamer.game.*
  var ec by remember{mutableStateOf(false)}
  ExposedDropdownMenuBox(expanded=ec,onExpandedChange={ec=!ec}){
   OutlinedTextField(vm.character.displayName,{},readOnly=true,label={Text("شخصية STS2")},modifier=Modifier.menuAnchor().fillMaxWidth())
-  ExposedDropdownMenu(expanded=ec,onDismissRequest={ec=false}){Sts2Character.entries.forEach{c->DropdownMenuItem(text={Text(c.displayName)},onClick={ {vm.setCharacter(c);ec=false} })}}
+  ExposedDropdownMenu(expanded=ec,onDismissRequest={ec=false}){Sts2Character.entries.forEach{c->DropdownMenuItem(text={Text(c.displayName)},onClick={ vm.setCharacter(c); ec=false })}}
  }
  Text(vm.character.playstyle,style=MaterialTheme.typography.bodySmall)
  var es by remember{mutableStateOf(false)}
  ExposedDropdownMenuBox(expanded=es,onExpandedChange={es=!es}){
   OutlinedTextField(vm.style.label,{},readOnly=true,label={Text("أسلوب اتخاذ القرار")},modifier=Modifier.menuAnchor().fillMaxWidth())
-  ExposedDropdownMenu(expanded=es,onDismissRequest={es=false}){PlayStyle.entries.forEach{s->DropdownMenuItem(text={Text(s.label)},onClick={ {vm.setStyle(s);es=false} })}}
+  ExposedDropdownMenu(expanded=es,onDismissRequest={es=false}){PlayStyle.entries.forEach{s->DropdownMenuItem(text={Text(s.label)},onClick={ vm.setStyle(s); es=false })}}
  }
  HorizontalDivider();Text("حالة القتال",style=MaterialTheme.typography.titleLarge)
  Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Num("HP",vm.hp,{vm.hp=it},Modifier.weight(1f));Num("Max HP",vm.maxHp,{vm.maxHp=it},Modifier.weight(1f))}
