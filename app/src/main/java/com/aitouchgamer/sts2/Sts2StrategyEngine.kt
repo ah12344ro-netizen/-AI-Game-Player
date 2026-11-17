@@ -3,7 +3,7 @@ package com.aitouchgamer.sts2
 import kotlin.math.max
 import kotlin.math.min
 
-/** Explainable offline planner. It never guesses card text or unknown effects. */
+/** Explainable offline planner. Unknown card/enemy effects are never inferred from names. */
 class Sts2StrategyEngine {
     fun plan(state: Sts2CombatState): Sts2TurnPlan {
         if (!state.isPlayerTurn) return Sts2TurnPlan(emptyList(), 0, 0, 0, 0, 0.0, listOf("Not the player's turn."))
@@ -15,11 +15,13 @@ class Sts2StrategyEngine {
         val plays = mutableListOf<Sts2CardChoice>()
         val hp = enemies.associate { it.id to it.hp }.toMutableMap()
         val weak = enemies.associate { it.id to it.weak }.toMutableMap()
+        val vulnerable = enemies.associate { it.id to it.vulnerable }.toMutableMap()
+
         while (true) {
             val best = remaining.filter { it.cost <= energy }.mapNotNull { card ->
                 val target = chooseTarget(card, enemies, hp)
                 if (needsTarget(card) && target == null) null
-                else Triple(card, target, score(card, state, enemies, hp, block, target))
+                else Triple(card, target, score(card, state, enemies, hp, block, target, vulnerable))
             }.filter { it.third > 0.0 }.maxByOrNull { it.third } ?: break
             val (card, target, value) = best
             energy -= card.cost
@@ -28,16 +30,18 @@ class Sts2StrategyEngine {
                 else listOfNotNull(enemies.firstOrNull { it.id == target && (hp[it.id] ?: 0) > 0 })
             val dealt = if (card.damage > 0 || card.role == Sts2CardRole.ATTACK || card.role == Sts2CardRole.AOE) targets.sumOf { enemy ->
                 val raw = card.damage * max(1, card.hits)
-                val amount = min(hp[enemy.id] ?: 0, max(0, raw - enemy.block))
+                val vulnerableRaw = if ((vulnerable[enemy.id] ?: 0) > 0) (raw * 1.5).toInt() else raw
+                val amount = min(hp[enemy.id] ?: 0, max(0, vulnerableRaw - enemy.block))
                 hp[enemy.id] = max(0, (hp[enemy.id] ?: 0) - amount)
                 amount
             } else 0
             damage += dealt
             block += card.block
             if (target != null && card.appliesWeak > 0) weak[target] = max(weak[target] ?: 0, card.appliesWeak)
+            if (target != null && card.appliesVulnerable > 0) vulnerable[target] = max(vulnerable[target] ?: 0, card.appliesVulnerable)
             val reason = when {
                 dealt > 0 && hp.values.all { it <= 0 } -> "Lethal: removes the remaining modelled enemy HP."
-                dealt > 0 -> "Damage reduces the current threat."
+                dealt > 0 -> "Deals $dealt projected damage after known enemy Block and Vulnerable."
                 card.block > 0 -> "Block offsets incoming damage."
                 card.draw > 0 -> "Draw effect; new card identities are not simulated."
                 card.appliesWeak > 0 -> "Weak reduces enemy attack pressure."
@@ -55,6 +59,7 @@ class Sts2StrategyEngine {
         val notes = mutableListOf<String>()
         if (loss > 0) notes += "Estimated HP loss if the turn ends: $loss."
         if (remaining.any { it.cost > energy }) notes += "Some remaining cards exceed the estimated energy."
+        if (state.hand.any { it.draw > 0 }) notes += "Drawn cards are not modelled until a new observation arrives."
         when (state.character) {
             Sts2Character.REGENT -> notes += "Include Stars and Sovereign Blade state when known."
             Sts2Character.NECROBINDER -> notes += "Include Osty, Summon and Doom state when known."
@@ -78,11 +83,13 @@ class Sts2StrategyEngine {
     }
 
     private fun score(c: Sts2CardInHand, s: Sts2CombatState, enemies: List<Sts2Enemy>,
-        hp: Map<String, Int>, currentBlock: Int, target: String?): Double {
+        hp: Map<String, Int>, currentBlock: Int, target: String?, vulnerable: Map<String, Int>): Double {
         val living = enemies.filter { (hp[it.id] ?: 0) > 0 }
-        val damage = c.damage * max(1, c.hits) * if (c.targetsAllEnemies) living.size else 1
+        val targetVulnerable = target?.let { (vulnerable[it] ?: 0) > 0 } == true
+        val perTargetDamage = if (targetVulnerable) (c.damage * 1.5).toInt() else c.damage
+        val damage = perTargetDamage * max(1, c.hits) * if (c.targetsAllEnemies) living.size else 1
         val targetHp = target?.let { hp[it] ?: 0 } ?: 0
-        val lethal = target != null && c.damage * max(1, c.hits) >= targetHp
+        val lethal = target != null && perTargetDamage * max(1, c.hits) >= targetHp
         val incoming = living.sumOf { it.incomingDamage }
         val blockGain = min(c.block, max(0, incoming - currentBlock))
         var result = when (c.role) {
