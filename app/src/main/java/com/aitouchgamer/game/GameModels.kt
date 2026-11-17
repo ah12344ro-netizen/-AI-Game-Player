@@ -4,8 +4,7 @@ enum class Sts2Character(val displayName: String, val playstyle: String) {
  SILENT("Silent","Shivs, Poison, discard synergies and flexible defense"),
  REGENT("Regent","Stars, Forge and the Sovereign Blade"),
  NECROBINDER("Necrobinder","Osty, summons, Doom and Souls"),
- DEFECT("Defect","Orbs, Focus and scaling effects"),
- THE_FOOL("The Fool (Public Beta)","Experimental profile; beta content and balance may change")
+ DEFECT("Defect","Orbs, Focus and scaling effects")
 }
 enum class PlayStyle(val label: String) { CAUTIOUS("محافظ"), BALANCED("متوازن"), AGGRESSIVE("هجومي") }
 data class CardAction(val name:String,val cost:Int,val damage:Int=0,val block:Int=0,val draw:Int=0)
