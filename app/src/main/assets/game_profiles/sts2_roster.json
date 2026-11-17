@@ -1,0 +1,26 @@
+{
+  "game": "Slay the Spire 2",
+  "schemaVersion": 2,
+  "characterSets": {
+    "mainBranch": [
+      {"id":"ironclad","name":"Ironclad","mechanics":["Strength","Exhaust","self-damage","sustain"]},
+      {"id":"silent","name":"Silent","mechanics":["Poison","Shivs","draw","discard"]},
+      {"id":"regent","name":"Regent","mechanics":["Stars","Forge","Sovereign Blade"]},
+      {"id":"necrobinder","name":"Necrobinder","mechanics":["Osty","Summon","Souls","Doom"]},
+      {"id":"defect","name":"Defect","mechanics":["Lightning","Frost","Dark","Plasma","Focus"]}
+    ],
+    "experimentalOrBeta": [
+      {"id":"the_fool","name":"The Fool","mechanics":["Aim","arrows","Impale","melodies"],"experimental":true}
+    ]
+  },
+  "dataPolicy": [
+    "Do not hardcode starting HP or card values without checking the exact game build and character unlock state.",
+    "Early Access card, relic and balance data must be versioned against the installed game build.",
+    "Never infer card effects, enemy intents or character-specific resources from names alone.",
+    "Experimental and beta content must remain separate from the stable roster."
+  ],
+  "sources": [
+    "https://www.megacrit.com/news/2026-02-19-release-date-trailer/",
+    "https://steamcommunity.com/app/2868840/announcements/"
+  ]
+}

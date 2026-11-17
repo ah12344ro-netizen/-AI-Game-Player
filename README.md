@@ -1,29 +1,23 @@
-# AITouchGamer
+# AITouchGamer — STS2 development branch
 
-Android-first, offline-first game assistant. Initial game profile: **STS2 — Slay the Spire 2**.
+This branch adds an isolated offline STS2 tactical subsystem to the current repository while preserving the existing starter app.
 
-## Included
-- Native Kotlin + Jetpack Compose Android application.
-- STS2 profiles for the five main-branch characters: Ironclad, Silent, Regent, Necrobinder and Defect.
-- Separate experimental profile for The Fool public beta.
-- Locally persisted character and play-style preferences.
-- Offline tactical baseline using manually entered HP, energy, block, incoming damage, enemy HP and hand cards.
-- Board calibration form for the user's selected mobile board. Coordinates remain blank until calibrated.
-- Unit tests and GitHub Actions build/test workflow.
+## Work added
+- Typed STS2 character, card, enemy-intent and combat-state models.
+- Explainable local turn planner with energy limits, lethal prioritisation, enemy Block, Vulnerable and Weak projections.
+- Confidence-gated OCR evidence adapter for explicitly labelled HP, max HP, energy and Block. Low-confidence readings are withheld.
+- Unit tests for tactical planning and OCR evidence validation.
+- Conservative roster metadata that keeps experimental/beta characters separate and avoids unverified HP/card values.
 
-## Current limitations
-This repository contained only a README before this Android project was added. The earlier AITouchGamer source archive was not available in this workspace. This is a clean starter project, not a verified merge of the previous touch automation source.
+## Original application source status
+The uploaded `AITouchGamer_hybrid_source.zip` has been located and inspected. It contains the fuller Android application: floating controller, MediaProjection capture, OpenCV/ML Kit OCR, TensorFlow Lite detector interface, Accessibility gestures, Room-based per-game memory, playbooks, and offline Arabic/English coaching.
 
-This build does not yet capture the game screen, run OCR/object detection, use Android Accessibility gestures, or automatically play the game. It contains no trained model weights. Tactical advice currently uses manually entered values. Board calibration stores user-entered percentages but is not connected to a touch executor.
+**That archive has not yet been imported into this GitHub branch.** The current CI still builds the starter Android app plus the isolated STS2 module. This branch is not yet the integrated original application and does not produce a new APK containing all original features.
 
-## Structure
-- game/: game state and offline tactical reasoning.
-- data/: local preferences and board calibration persistence.
-- ui/: STS2 coaching and board calibration screens.
-- assets/game_profiles/: game knowledge kept separate from board calibration.
+## STS2 integration status
+The planner accepts structured card and enemy properties. The OCR adapter currently extracts only high-confidence, explicitly labelled player HP, max HP, energy and Block. It does not yet identify card names/costs/effects, enemy intents/HP, relics, Regent Stars, Defect Orbs, Necrobinder/Osty state, or The Fool-specific state from the game screen. It is not connected to automatic card-touch execution.
 
-## Build
-GitHub Actions uses JDK 17, Android SDK and Gradle 8.9. Workflow: .github/workflows/android.yml. Expected artifact: AITouchGamer-debug-apk.
+Unknown state is not guessed. The next integration step is to import the original source tree, connect its `FrameAnalysis` OCR output to this evidence layer, then add game-specific screen regions and a verified card/enemy knowledge pack.
 
-## STS2 knowledge
-The profile is a conservative baseline based on official Mega Crit information. Early Access can change content and balance; card values, enemy intents, relic effects and route heuristics must be versioned against the exact game build before being treated as authoritative. The Fool is isolated in a separate public-beta profile.
+## Build and validation
+GitHub Actions builds the current repository and runs JVM unit tests on pull requests. A successful build of this branch must not be interpreted as validation of the unimported original archive.
