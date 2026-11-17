@@ -1,29 +1,21 @@
-# AITouchGamer
+# AITouchGamer — STS2 tactical engine work
 
-Android-first, offline-first game assistant. Initial game profile: **STS2 — Slay the Spire 2**.
+This branch contains an initial offline Slay the Spire 2 tactical-planning module added while the original AITouchGamer source archive is being integrated.
 
-## Included
-- Native Kotlin + Jetpack Compose Android application.
-- STS2 profiles for the five main-branch characters: Ironclad, Silent, Regent, Necrobinder and Defect.
-- Separate experimental profile for The Fool public beta.
-- Locally persisted character and play-style preferences.
-- Offline tactical baseline using manually entered HP, energy, block, incoming damage, enemy HP and hand cards.
-- Board calibration form for the user's selected mobile board. Coordinates remain blank until calibrated.
-- Unit tests and GitHub Actions build/test workflow.
+## Added in this branch
+- Typed STS2 character, card, enemy-intent and combat-state models.
+- Explainable local turn planner scoring lethal attacks, incoming damage, block, draw, scaling and basic debuffs.
+- Branch-aware roster metadata: five main-branch characters plus The Fool isolated as experimental public-beta v0.113.0.
+- JVM tests for lethal prioritisation, defensive block and energy constraints.
 
-## Current limitations
-This repository contained only a README before this Android project was added. The earlier AITouchGamer source archive was not available in this workspace. This is a clean starter project, not a verified merge of the previous touch automation source.
+## Important integration status
+The original AITouchGamer source archive has now been located in the user's uploaded files. It contains the app's floating controller, MediaProjection capture, OCR/OpenCV vision, Accessibility gestures, Room-based per-game learning, playbooks and offline Arabic/English teaching chat. This branch does **not yet contain that full application source**; it is an isolated tactical-engine change and must not be mistaken for a replacement app or a completed integration.
 
-This build does not yet capture the game screen, run OCR/object detection, use Android Accessibility gestures, or automatically play the game. It contains no trained model weights. Tactical advice currently uses manually entered values. Board calibration stores user-entered percentages but is not connected to a touch executor.
+The STS2 planner currently accepts structured card and enemy properties. The generic vision pipeline has not yet been validated to extract STS2 card text, costs, enemy intents, relics, Stars, Orbs or Osty state reliably. Unknown game state is not guessed, and autonomous card execution is not enabled by this module.
 
-## Structure
-- game/: game state and offline tactical reasoning.
-- data/: local preferences and board calibration persistence.
-- ui/: STS2 coaching and board calibration screens.
-- assets/game_profiles/: game knowledge kept separate from board calibration.
+## STS2 roster/version notes
+The five main-branch characters are Ironclad, Silent, Regent, Necrobinder and Defect. The Fool is separated because it was introduced on the public-beta branch in v0.113.0 and is experimental. Early Access card and balance data must be versioned and refreshed as Mega Crit updates the game.
 
-## Build
-GitHub Actions uses JDK 17, Android SDK and Gradle 8.9. Workflow: .github/workflows/android.yml. Expected artifact: AITouchGamer-debug-apk.
-
-## STS2 knowledge
-The profile is a conservative baseline based on official Mega Crit information. Early Access can change content and balance; card values, enemy intents, relic effects and route heuristics must be versioned against the exact game build before being treated as authoritative. The Fool is isolated in a separate public-beta profile.
+References:
+- https://www.megacrit.com/news/2026-02-19-release-date-trailer/
+- https://steamcommunity.com/app/2868840/announcements/
