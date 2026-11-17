@@ -1,20 +1,29 @@
 # AITouchGamer
 
-An Android-first, local-first game assistant focused on understanding game state, planning strategy, making tactical decisions, and learning from play sessions.
+Android-first, offline-first game assistant. Initial game profile: **STS2 — Slay the Spire 2**.
 
-## Project direction
+## Included
+- Native Kotlin + Jetpack Compose Android application.
+- STS2 profiles for the five main-branch characters: Ironclad, Silent, Regent, Necrobinder and Defect.
+- Separate experimental profile for The Fool public beta.
+- Locally persisted character and play-style preferences.
+- Offline tactical baseline using manually entered HP, energy, block, incoming damage, enemy HP and hand cards.
+- Board calibration form for the user's selected mobile board. Coordinates remain blank until calibrated.
+- Unit tests and GitHub Actions build/test workflow.
 
-This repository is the working home for the AITouchGamer rebuild. The initial game knowledge target is Slay the Spire 2. Game rules and strategy knowledge will remain separate from device- and board-specific screen calibration.
+## Current limitations
+This repository contained only a README before this Android project was added. The earlier AITouchGamer source archive was not available in this workspace. This is a clean starter project, not a verified merge of the previous touch automation source.
 
-## Core principles
+This build does not yet capture the game screen, run OCR/object detection, use Android Accessibility gestures, or automatically play the game. It contains no trained model weights. Tactical advice currently uses manually entered values. Board calibration stores user-entered percentages but is not connected to a touch executor.
 
-- Run gameplay analysis, decision-making, and experience storage locally on the device.
-- Reuse and extend the existing touch-input and automation foundation rather than rebuilding it unnecessarily.
-- Separate game knowledge, strategic reasoning, tactical decisions, and board calibration.
-- Represent uncertain visual readings as unknown and avoid acting on ambiguous state.
-- Explain recommendations and preserve player control.
-- Do not claim that a trained on-device language model exists unless its model weights and runtime are actually included.
+## Structure
+- game/: game state and offline tactical reasoning.
+- data/: local preferences and board calibration persistence.
+- ui/: STS2 coaching and board calibration screens.
+- assets/game_profiles/: game knowledge kept separate from board calibration.
 
-## Build status
+## Build
+GitHub Actions uses JDK 17, Android SDK and Gradle 8.9. Workflow: .github/workflows/android.yml. Expected artifact: AITouchGamer-debug-apk.
 
-The repository setup is being updated. Android build and test status will be reported only after CI has actually run and its results have been checked.
+## STS2 knowledge
+The profile is a conservative baseline based on official Mega Crit information. Early Access can change content and balance; card values, enemy intents, relic effects and route heuristics must be versioned against the exact game build before being treated as authoritative. The Fool is isolated in a separate public-beta profile.

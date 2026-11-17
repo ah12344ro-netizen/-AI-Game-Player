@@ -1,0 +1,15 @@
+{
+ "id":"sts2","displayName":"Slay the Spire 2","shortName":"STS2","profileSchema":1,"knowledgeStatus":"early-access-versioned-baseline",
+ "characters":[
+  {"id":"ironclad","name":"Ironclad","focus":["Strength","Exhaust","self-damage","direct attacks"]},
+  {"id":"silent","name":"Silent","focus":["Shivs","Poison","discard synergies","defensive flexibility"]},
+  {"id":"regent","name":"Regent","focus":["Stars","Forge","Sovereign Blade"]},
+  {"id":"necrobinder","name":"Necrobinder","focus":["Osty","Summon","Doom","Souls"]},
+  {"id":"defect","name":"Defect","focus":["Orbs","Focus","scaling effects"]}
+ ],
+ "combatStateFields":["playerHp","maxHp","energy","block","enemyIntents","enemyHp","enemyBlock","hand","drawPileCount","discardPileCount","exhaustPileCount","statuses","relics","potions"],
+ "decisionPriorities":["verify lethal after enemy block and modifiers","prevent lethal incoming damage","account for enemy intents and multi-hit attacks","evaluate energy efficiency","consider status and delayed damage","preserve resources for future encounters"],
+ "runPlanning":["evaluate map route risk","weigh elite rewards against health and deck readiness","consider rest, upgrade, shop and event opportunities","prefer cards that improve synergy without unnecessary deck bloat"],
+ "uncertaintyPolicy":"Unknown or unreadable state must remain unknown; do not issue an automated touch action from uncertain state.",
+ "sourcePolicy":"Early Access changes cards, enemies, events and balance. Version detailed data against the exact game build."
+}
