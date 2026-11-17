@@ -30,4 +30,13 @@ class Sts2StrategyEngineTest {
             listOf(Sts2CardInHand("expensive", "Expensive", 2, Sts2CardRole.ATTACK, damage = 50)))
         assertTrue(engine.plan(state).orderedPlays.isEmpty())
     }
+
+    @Test fun multiHitConsumesEnemyBlockAcrossIndividualHits() {
+        val state = Sts2CombatState(Sts2Character.SILENT, 30, 50, 0, 2,
+            listOf(Sts2Enemy("enemy", hp = 3, block = 5)),
+            listOf(Sts2CardInHand("multi", "Multi-hit", 1, Sts2CardRole.ATTACK, damage = 4, hits = 2)))
+        val plan = engine.plan(state)
+        assertEquals(3, plan.projectedDamage)
+        assertTrue(plan.orderedPlays.first().explanation.contains("Lethal"))
+    }
 }
