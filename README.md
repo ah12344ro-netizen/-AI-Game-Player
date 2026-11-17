@@ -1,21 +1,23 @@
-# AITouchGamer — STS2 tactical engine work
+# AITouchGamer — STS2 development branch
 
-This branch contains an initial offline Slay the Spire 2 tactical-planning module added while the original AITouchGamer source archive is being integrated.
+This branch adds an isolated offline STS2 tactical subsystem to the current repository while preserving the existing starter app.
 
-## Added in this branch
+## Work added
 - Typed STS2 character, card, enemy-intent and combat-state models.
-- Explainable local turn planner scoring lethal attacks, incoming damage, block, draw, scaling and basic debuffs.
-- Branch-aware roster metadata: five main-branch characters plus The Fool isolated as experimental public-beta v0.113.0.
-- JVM tests for lethal prioritisation, defensive block and energy constraints.
+- Explainable local turn planner with energy limits, lethal prioritisation, enemy Block, Vulnerable and Weak projections.
+- Confidence-gated OCR evidence adapter for explicitly labelled HP, max HP, energy and Block. Low-confidence readings are withheld.
+- Unit tests for tactical planning and OCR evidence validation.
+- Conservative roster metadata that keeps experimental/beta characters separate and avoids unverified HP/card values.
 
-## Important integration status
-The original AITouchGamer source archive has now been located in the user's uploaded files. It contains the app's floating controller, MediaProjection capture, OCR/OpenCV vision, Accessibility gestures, Room-based per-game learning, playbooks and offline Arabic/English teaching chat. This branch does **not yet contain that full application source**; it is an isolated tactical-engine change and must not be mistaken for a replacement app or a completed integration.
+## Original application source status
+The uploaded `AITouchGamer_hybrid_source.zip` has been located and inspected. It contains the fuller Android application: floating controller, MediaProjection capture, OpenCV/ML Kit OCR, TensorFlow Lite detector interface, Accessibility gestures, Room-based per-game memory, playbooks, and offline Arabic/English coaching.
 
-The STS2 planner currently accepts structured card and enemy properties. The generic vision pipeline has not yet been validated to extract STS2 card text, costs, enemy intents, relics, Stars, Orbs or Osty state reliably. Unknown game state is not guessed, and autonomous card execution is not enabled by this module.
+**That archive has not yet been imported into this GitHub branch.** The current CI still builds the starter Android app plus the isolated STS2 module. This branch is not yet the integrated original application and does not produce a new APK containing all original features.
 
-## STS2 roster/version notes
-The five main-branch characters are Ironclad, Silent, Regent, Necrobinder and Defect. The Fool is separated because it was introduced on the public-beta branch in v0.113.0 and is experimental. Early Access card and balance data must be versioned and refreshed as Mega Crit updates the game.
+## STS2 integration status
+The planner accepts structured card and enemy properties. The OCR adapter currently extracts only high-confidence, explicitly labelled player HP, max HP, energy and Block. It does not yet identify card names/costs/effects, enemy intents/HP, relics, Regent Stars, Defect Orbs, Necrobinder/Osty state, or The Fool-specific state from the game screen. It is not connected to automatic card-touch execution.
 
-References:
-- https://www.megacrit.com/news/2026-02-19-release-date-trailer/
-- https://steamcommunity.com/app/2868840/announcements/
+Unknown state is not guessed. The next integration step is to import the original source tree, connect its `FrameAnalysis` OCR output to this evidence layer, then add game-specific screen regions and a verified card/enemy knowledge pack.
+
+## Build and validation
+GitHub Actions builds the current repository and runs JVM unit tests on pull requests. A successful build of this branch must not be interpreted as validation of the unimported original archive.
