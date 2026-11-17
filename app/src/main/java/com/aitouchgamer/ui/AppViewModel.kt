@@ -14,8 +14,8 @@ class AppViewModel(private val store:LocalProfileStore){
  var boardName by mutableStateOf(store.boardName());var boardWidth by mutableStateOf(store.boardWidth());var boardHeight by mutableStateOf(store.boardHeight())
  val anchorKeys=listOf("hand","energy","enemy","end_turn")
  var anchors by mutableStateOf(anchorKeys.associateWith{store.anchor(it)})
- fun setCharacter(v:Sts2Character){character=v;store.saveProfile(character,style);advice=null}
- fun setStyle(v:PlayStyle){style=v;store.saveProfile(character,style);advice=null}
+ fun selectCharacter(v:Sts2Character){character=v;store.saveProfile(character,style);advice=null}
+ fun selectStyle(v:PlayStyle){style=v;store.saveProfile(character,style);advice=null}
  fun analyze(){
   val cards=cardLines.lines().mapNotNull{line->val p=line.split("|").map{it.trim()};if(p.size<4)null else runCatching{CardAction(p[0],p[1].toInt(),p[2].toInt(),p[3].toInt(),p.getOrNull(4)?.toIntOrNull()?:0)}.getOrNull()}
   val n=listOf(hp,maxHp,energy,block,incoming,enemyHp).map{it.toIntOrNull()}
