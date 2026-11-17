@@ -1,0 +1,28 @@
+{
+  "game": "Slay the Spire 2",
+  "schemaVersion": 1,
+  "verifiedAt": "2026-11-17",
+  "mainBranch": {
+    "characters": [
+      {"id":"ironclad","name":"Ironclad","hp":80,"mechanics":["Strength","Exhaust","self-damage","sustain"]},
+      {"id":"silent","name":"Silent","hp":70,"mechanics":["Poison","Shivs","draw","discard","Sly"]},
+      {"id":"regent","name":"Regent","hp":75,"mechanics":["Stars","Forge","Sovereign Blade"]},
+      {"id":"necrobinder","name":"Necrobinder","hp":66,"mechanics":["Osty","Summon","Souls","Doom"]},
+      {"id":"defect","name":"Defect","hp":75,"mechanics":["Lightning","Frost","Dark","Plasma","Focus"]}
+    ]
+  },
+  "publicBeta": {
+    "characters": [
+      {"id":"the_fool","name":"The Fool","branch":"public-beta","version":"0.113.0","mechanics":["Aim","arrows","Impale","melodies"],"experimental":true}
+    ]
+  },
+  "notes": [
+    "Early Access card and relic pools change frequently; never infer exact effects from names.",
+    "The Fool is public-beta-only in v0.113.0 and is not part of the main-branch roster.",
+    "Combat advice requires structured card and enemy properties; unknown OCR remains unknown."
+  ],
+  "sources": [
+    "https://www.megacrit.com/news/2026-02-19-release-date-trailer/",
+    "https://steamcommunity.com/app/2868840/announcements/"
+  ]
+}
